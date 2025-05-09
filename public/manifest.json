@@ -1,0 +1,80 @@
+{
+    "name": "Race Control",
+    "short_name": "Race Control",
+    "description": "Race timing application for Portsmouth Joggers' Club",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#00539F",
+    "icons": [
+      {
+        "src": "/img/icons/icon-72x72.png",
+        "sizes": "72x72",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icons/icon-96x96.png",
+        "sizes": "96x96",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icons/icon-128x128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icons/icon-144x144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icons/icon-152x152.png",
+        "sizes": "152x152",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icons/icon-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icons/icon-384x384.png",
+        "sizes": "384x384",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/icons/icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "orientation": "portrait",
+    "categories": ["sports", "fitness", "utilities"],
+    "offline_enabled": true,
+    "shortcuts": [
+      {
+        "name": "Start Race",
+        "short_name": "Start",
+        "description": "Start a new race",
+        "url": "/?action=start",
+        "icons": [
+          {
+            "src": "/img/icons/start-192x192.png",
+            "sizes": "192x192"
+          }
+        ]
+      },
+      {
+        "name": "Results",
+        "short_name": "Results",
+        "description": "View race results",
+        "url": "/?action=results",
+        "icons": [
+          {
+            "src": "/img/icons/results-192x192.png",
+            "sizes": "192x192"
+          }
+        ]
+      }
+    ]
+  }

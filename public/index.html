@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#00539F">
+  <title>Race Control | Portsmouth Joggers' Club</title>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/img/icons/favicon.ico" type="image/x-icon">
+  
+  <!-- iOS support -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Race Control">
+  <link rel="apple-touch-icon" href="/img/icons/icon-152x152.png">
+  
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="header-content">
+        <h1>Race Control</h1>
+        <div id="network-status" class="online">Online</div>
+      </div>
+      <div class="timer-display" id="timer-display">00:00:00</div>
+    </header>
+
+    <main id="main-content">
+      <div id="page-loading" class="page-loading">
+        <div class="spinner"></div>
+        <p>Loading...</p>
+      </div>
+
+      <!-- Race selection page -->
+      <section id="page-race-selection" class="page hidden">
+        <h2>Select Race</h2>
+        <div class="race-list" id="race-list">
+          <!-- Race list will be populated here -->
+        </div>
+        <div class="action-buttons">
+          <button id="btn-create-race" class="btn btn-primary">Create New Race</button>
+        </div>
+      </section>
+
+      <!-- Race creation/edit page -->
+      <section id="page-race-form" class="page hidden">
+        <h2 id="race-form-title">Create Race</h2>
+        <form id="race-form">
+          <div class="form-group">
+            <label for="race-name">Race Name</label>
+            <input type="text" id="race-name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="race-description">Description</label>
+            <textarea id="race-description" name="description" rows="3"></textarea>
+          </div>
+          <div class="action-buttons">
+            <button type="button" id="btn-cancel-race" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Race</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Race detail page -->
+      <section id="page-race-detail" class="page hidden">
+        <div class="race-header">
+          <h2 id="race-detail-name"></h2>
+          <p id="race-detail-description"></p>
+          <div id="race-status" class="race-status"></div>
+        </div>
+
+        <div class="race-tabs">
+          <button id="tab-timing" class="tab-button active">Timing</button>
+          <button id="tab-runners" class="tab-button">Runners</button>
+          <button id="tab-results" class="tab-button">Results</button>
+          <button id="tab-settings" class="tab-button">Settings</button>
+        </div>
+
+        <!-- Timing tab -->
+        <div id="tab-content-timing" class="tab-content active">
+          <div id="race-controls" class="race-controls">
+            <button id="btn-start-race" class="btn btn-lg btn-success">Start Race</button>
+            <button id="btn-end-race" class="btn btn-lg btn-danger hidden">End Race</button>
+          </div>
+
+          <div id="runner-input" class="runner-input hidden">
+            <div class="form-group">
+              <label for="bib-number">Bib #</label>
+              <input type="number" id="bib-number" pattern="[0-9]*" inputmode="numeric" min="1" autocomplete="off">
+            </div>
+            <button id="btn-record-finish" class="btn btn-lg btn-primary">Record Finish</button>
+          </div>
+
+          <div id="recent-finishes" class="recent-finishes hidden">
+            <h3>Recent Finishes</h3>
+            <div id="recent-finish-list" class="recent-finish-list">
+              <!-- Recent finishes will be added here -->
+            </div>
+          </div>
+
+          <div id="sync-status" class="sync-status hidden">
+            <p>Unsaved results: <span id="unsaved-count">0</span></p>
+            <button id="btn-sync-results" class="btn btn-secondary">Sync Results</button>
+          </div>
+        </div>
+
+        <!-- Runners tab -->
+        <div id="tab-content-runners" class="tab-content">
+          <div class="runners-header">
+            <input type="text" id="search-runners" placeholder="Search runners">
+            <button id="btn-add-runner" class="btn btn-primary">Add Runner</button>
+          </div>
+          <div id="runners-list" class="runners-list">
+            <!-- Runners will be listed here -->
+          </div>
+          <div class="action-buttons">
+            <button id="btn-import-runners" class="btn btn-secondary">Import Runners</button>
+          </div>
+        </div>
+
+        <!-- Results tab -->
+        <div id="tab-content-results" class="tab-content">
+          <div class="results-header">
+            <input type="text" id="search-results" placeholder="Search results">
+            <button id="btn-export-results" class="btn btn-secondary">Export CSV</button>
+          </div>
+          <div id="results-list" class="results-list">
+            <!-- Results will be listed here -->
+          </div>
+          <div id="results-summary" class="results-summary">
+            <!-- Summary statistics will be shown here -->
+          </div>
+        </div>
+
+        <!-- Settings tab -->
+        <div id="tab-content-settings" class="tab-content">
+          <div class="settings-group">
+            <h3>Race Settings</h3>
+            <button id="btn-edit-race" class="btn btn-secondary">Edit Race Details</button>
+          </div>
+
+          <div class="settings-group">
+            <h3>Device Settings</h3>
+            <div class="setting-item">
+              <label for="device-id">Device ID</label>
+              <input type="text" id="device-id" readonly>
+            </div>
+            <div class="setting-item">
+              <label for="offline-mode">Offline Mode</label>
+              <label class="switch">
+                <input type="checkbox" id="offline-mode">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <h3>Data Management</h3>
+            <button id="btn-clear-local-data" class="btn btn-danger">Clear Local Data</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Runner form page -->
+      <section id="page-runner-form" class="page hidden">
+        <h2 id="runner-form-title">Add Runner</h2>
+        <form id="runner-form">
+          <div class="form-group">
+            <label for="runner-bib">Bib Number</label>
+            <input type="number" id="runner-bib" name="bib_number" required pattern="[0-9]*" inputmode="numeric">
+          </div>
+          <div class="form-group">
+            <label for="runner-name">Name</label>
+            <input type="text" id="runner-name" name="name">
+          </div>
+          <div class="action-buttons">
+            <button type="button" id="btn-cancel-runner" class="btn btn-secondary">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Runner</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Runner import page -->
+      <section id="page-runner-import" class="page hidden">
+        <h2>Import Runners</h2>
+        <p class="import-instructions">
+          Enter one runner per line in the format: <br>
+          <code>BibNumber,Name</code>
+        </p>
+        <div class="form-group">
+          <textarea id="import-data" rows="10" placeholder="1,John Smith
+2,Jane Doe
+3,Sam Johnson"></textarea>
+        </div>
+        <div class="action-buttons">
+          <button type="button" id="btn-cancel-import" class="btn btn-secondary">Cancel</button>
+          <button type="button" id="btn-process-import" class="btn btn-primary">Import Runners</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Toast notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Modal dialogs -->
+    <div id="modal-container" class="modal-container hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 id="modal-title">Confirmation</h3>
+          <button id="modal-close" class="modal-close">&times;</button>
+        </div>
+        <div id="modal-content" class="modal-content">
+          <!-- Modal content will be inserted here -->
+        </div>
+        <div class="modal-footer">
+          <button id="modal-cancel" class="btn btn-secondary">Cancel</button>
+          <button id="modal-confirm" class="btn btn-primary">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/js/utils.js"></script>
+  <script src="/js/timer.js"></script>
+  <script src="/js/runners.js"></script>
+  <script src="/js/results.js"></script>
+  <script src="/js/sync.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(registration => {
+            console.log('Service Worker registered: ', registration);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

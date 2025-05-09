@@ -1,0 +1,891 @@
+/* 
+   Race Control - Portsmouth Joggers' Club 
+   Main Stylesheet
+*/
+
+/* --- Base & Reset --- */
+:root {
+    /* Color palette */
+    --primary-color: #00539F;     /* PJC blue */
+    --primary-dark: #003a73;
+    --primary-light: #3383d1;
+    --secondary-color: #FF6B00;   /* Orange accent */
+    --success-color: #28a745;     /* Green */
+    --danger-color: #dc3545;      /* Red */
+    --warning-color: #ffc107;     /* Yellow */
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #ced4da;
+    --gray-500: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-700: #495057;
+    --gray-800: #343a40;
+    --gray-900: #212529;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Border radius */
+    --border-radius: 0.25rem;
+    --border-radius-lg: 0.5rem;
+    
+    /* Font sizes */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+    --font-size-2xl: 2rem;
+    --font-size-3xl: 3rem;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--gray-900);
+    background-color: var(--gray-100);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none; /* Prevent pull-to-refresh on mobile */
+  }
+  
+  body {
+    overflow-x: hidden;
+    touch-action: manipulation; /* Disable double-tap zoom */
+  }
+  
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  /* --- Typography --- */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  h1 {
+    font-size: var(--font-size-2xl);
+  }
+  
+  h2 {
+    font-size: var(--font-size-xl);
+  }
+  
+  h3 {
+    font-size: var(--font-size-lg);
+  }
+  
+  p {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  /* --- Header --- */
+  header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--spacing-md) var(--spacing-md);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  header h1 {
+    font-size: var(--font-size-xl);
+    margin: 0;
+  }
+  
+  .timer-display {
+    font-size: var(--font-size-2xl);
+    font-family: monospace;
+    font-weight: bold;
+    text-align: center;
+    margin-top: var(--spacing-xs);
+    padding: var(--spacing-xs) 0;
+  }
+  
+  #network-status {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 1rem;
+    font-size: var(--font-size-xs);
+    font-weight: bold;
+  }
+  
+  #network-status.online {
+    background-color: var(--success-color);
+  }
+  
+  #network-status.offline {
+    background-color: var(--danger-color);
+  }
+  
+  /* --- Main Content --- */
+  main {
+    flex: 1;
+    padding: var(--spacing-md);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .page {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .page-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary-color);
+    animation: spin 1s linear infinite;
+    margin-bottom: var(--spacing-md);
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .hidden {
+    display: none !important;
+  }
+  
+  /* --- Buttons --- */
+  .btn {
+    display: inline-block;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    border-radius: var(--border-radius);
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  .btn:active {
+    transform: translateY(1px);
+  }
+  
+  .btn-lg {
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-lg);
+  }
+  
+  .btn-primary {
+    color: white;
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  
+  .btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+  }
+  
+  .btn-secondary {
+    color: white;
+    background-color: var(--gray-600);
+    border-color: var(--gray-600);
+  }
+  
+  .btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--gray-700);
+    border-color: var(--gray-700);
+  }
+  
+  .btn-success {
+    color: white;
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+  }
+  
+  .btn-success:hover, .btn-success:focus {
+    background-color: #218838;
+    border-color: #1e7e34;
+  }
+  
+  .btn-danger {
+    color: white;
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+  }
+  
+  .btn-danger:hover, .btn-danger:focus {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+  
+  /* --- Forms --- */
+  .form-group {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+  }
+  
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--gray-800);
+    background-color: white;
+    background-clip: padding-box;
+    border: 1px solid var(--gray-400);
+    border-radius: var(--border-radius);
+    transition: border-color 0.15s ease-in-out;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--primary-light);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 83, 159, 0.25);
+  }
+  
+  /* iOS input reset */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+  
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  /* --- Race Selection Page --- */
+  .race-list {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .race-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--gray-300);
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out, box-shadow 0.1s ease-in-out;
+  }
+  
+  .race-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .race-card h3 {
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .race-card-status {
+    display: inline-block;
+    font-size: var(--font-size-xs);
+    font-weight: bold;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 1rem;
+    margin-top: var(--spacing-xs);
+  }
+  
+  .race-card-status.planned {
+    background-color: var(--gray-200);
+    color: var(--gray-700);
+  }
+  
+  .race-card-status.active {
+    background-color: var(--primary-light);
+    color: white;
+  }
+  
+  .race-card-status.completed {
+    background-color: var(--success-color);
+    color: white;
+  }
+  
+  /* --- Race Detail Page --- */
+  .race-header {
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .race-status {
+    display: inline-block;
+    font-weight: bold;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: 1rem;
+    margin-top: var(--spacing-xs);
+  }
+  
+  .race-status.planned {
+    background-color: var(--gray-200);
+    color: var(--gray-700);
+  }
+  
+  .race-status.active {
+    background-color: var(--primary-light);
+    color: white;
+  }
+  
+  .race-status.completed {
+    background-color: var(--success-color);
+    color: white;
+  }
+  
+  /* --- Tabs --- */
+  .race-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--gray-300);
+    margin-bottom: var(--spacing-lg);
+    overflow-x: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  .race-tabs::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  
+  .tab-button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  
+  .tab-button.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+  }
+  
+  .tab-content {
+    display: none;
+  }
+  
+  .tab-content.active {
+    display: block;
+  }
+  
+  /* --- Timing Tab --- */
+  .race-controls {
+    display: flex;
+    justify-content: center;
+    margin: var(--spacing-xl) 0;
+  }
+  
+  .race-controls .btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-lg);
+    min-width: 200px;
+  }
+  
+  .runner-input {
+    display: flex;
+    align-items: flex-end;
+    margin: var(--spacing-xl) 0;
+    gap: var(--spacing-md);
+  }
+  
+  .runner-input .form-group {
+    flex: 1;
+    margin-bottom: 0;
+  }
+  
+  .runner-input input {
+    font-size: var(--font-size-xl);
+    padding: var(--spacing-md);
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .recent-finishes {
+    margin-top: var(--spacing-xl);
+  }
+  
+  .recent-finish-list {
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .finish-item {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .finish-item:last-child {
+    border-bottom: none;
+  }
+  
+  .finish-item .time {
+    font-weight: bold;
+    font-family: monospace;
+  }
+  
+  .sync-status {
+    margin-top: var(--spacing-xl);
+    text-align: center;
+    padding: var(--spacing-md);
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+  }
+  
+  /* --- Runners Tab --- */
+  .runners-header {
+    display: flex;
+    margin-bottom: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+  
+  .runners-header input {
+    flex: 1;
+  }
+  
+  .runners-list {
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-lg);
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
+  .runner-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .runner-item:last-child {
+    border-bottom: none;
+  }
+  
+  .runner-bib {
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    min-width: 40px;
+    text-align: center;
+  }
+  
+  .runner-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+  
+  .btn-icon {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    color: var(--gray-600);
+  }
+  
+  .btn-icon:hover {
+    color: var(--gray-900);
+  }
+  
+  /* --- Results Tab --- */
+  .results-header {
+    display: flex;
+    margin-bottom: var(--spacing-md);
+    gap: var(--spacing-md);
+  }
+  
+  .results-header input {
+    flex: 1;
+  }
+  
+  .results-list {
+    border: 1px solid var(--gray-300);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--spacing-lg);
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
+  .result-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--spacing-md);
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .result-item:last-child {
+    border-bottom: none;
+  }
+  
+  .result-place {
+    font-weight: bold;
+    min-width: 30px;
+  }
+  
+  .result-time {
+    font-family: monospace;
+    font-weight: bold;
+  }
+  
+  .results-summary {
+    background-color: var(--gray-100);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+  }
+  
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-md);
+  }
+  
+  .stat-item h4 {
+    font-size: var(--font-size-sm);
+    color: var(--gray-600);
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  .stat-value {
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+  }
+  
+  /* --- Settings Tab --- */
+  .settings-group {
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .setting-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .setting-item:last-child {
+    border-bottom: none;
+  }
+  
+  /* Toggle switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gray-400);
+    transition: .4s;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+  }
+  
+  input:checked + .slider {
+    background-color: var(--primary-color);
+  }
+  
+  input:focus + .slider {
+    box-shadow: 0 0 1px var(--primary-color);
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  
+  .slider.round {
+    border-radius: 34px;
+  }
+  
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  
+  /* --- Import Page --- */
+  .import-instructions {
+    margin-bottom: var(--spacing-md);
+  }
+  
+  code {
+    background-color: var(--gray-200);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-family: monospace;
+  }
+  
+  /* --- Toast Notifications --- */
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .toast {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-bottom: var(--spacing-sm);
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  .toast.success {
+    border-left: 4px solid var(--success-color);
+  }
+  
+  .toast.error {
+    border-left: 4px solid var(--danger-color);
+  }
+  
+  .toast.info {
+    border-left: 4px solid var(--primary-color);
+  }
+  
+  .toast.warning {
+    border-left: 4px solid var(--warning-color);
+  }
+  
+  .toast-close {
+    background: none;
+    border: none;
+    font-size: var(--font-size-lg);
+    cursor: pointer;
+    color: var(--gray-600);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* --- Modal Dialog --- */
+  .modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background-color: white;
+    border-radius: var(--border-radius-lg);
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s ease-in-out;
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--gray-200);
+  }
+  
+  .modal-header h3 {
+    margin: 0;
+  }
+  
+  .modal-close {
+    background: none;
+    border: none;
+    font-size: var(--font-size-xl);
+    line-height: 1;
+    cursor: pointer;
+    color: var(--gray-600);
+  }
+  
+  .modal-content {
+    padding: var(--spacing-md);
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-top: 1px solid var(--gray-200);
+  }
+  
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* --- Responsive Adjustments --- */
+  @media (max-width: 768px) {
+    .action-buttons {
+      flex-direction: column-reverse;
+      gap: var(--spacing-sm);
+    }
+    
+    .action-buttons .btn {
+      width: 100%;
+    }
+    
+    .runner-input {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .runner-input .form-group {
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .result-item {
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto auto;
+    }
+    
+    .result-place {
+      grid-row: span 2;
+    }
+    
+    .result-time {
+      grid-column: 2;
+      grid-row: 2;
+    }
+  }
+  
+  /* --- PWA Install Banner --- */
+  .install-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-top: 1px solid var(--gray-300);
+    padding: var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 90;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .install-banner-text {
+    flex: 1;
+  }
+  
+  .install-banner-text h3 {
+    margin-bottom: var(--spacing-xs);
+  }
+  
+  /* --- Print Styles --- */
+  @media print {
+    header, .race-tabs, .action-buttons, .runners-header, .results-header {
+      display: none !important;
+    }
+    
+    body {
+      background-color: white;
+    }
+    
+    .tab-content {
+      display: block !important;
+    }
+    
+    .page {
+      max-width: 100%;
+    }
+  }
